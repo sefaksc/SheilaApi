@@ -1,0 +1,34 @@
+app:
+  udp:
+    port: 9876
+  seed:
+    enabled: true
+  rooms:
+    defaultCapacity: 100   # ← oda kapasitesi verilmezse kullanılacak varsayılan
+
+spring:
+  data:
+    mongodb:
+      # Prod'da ortam de?i?keninden al; yoksa lokalde bu url'i kullan
+      uri: "mongodb+srv://sheilamongodb:N6YJOO8WYy7xeJ6w@sheila.gzy7n.mongodb.net/Sheila?retryWrites=true&w=majority&appName=Sheila"
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: when_authorized
+
+logging:
+  level:
+    root: INFO
+    com.sheila.api: DEBUG
+
+
+server:
+  port: 8080
+
+
+

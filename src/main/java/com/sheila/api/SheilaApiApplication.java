@@ -1,4 +1,4 @@
-package com.sheila.api.SheilaApi;
+package com.sheila.api;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
