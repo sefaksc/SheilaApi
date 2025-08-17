@@ -23,5 +23,7 @@ public interface RoomService {
     List<Endpoint> listRoomPeers(String appKey, String roomName);
 
     void leaveRoom(String appKey, String roomName, String ip, int port);
+
+    void touchClient(String appKey, String roomName, String ip, int port);
 }
 

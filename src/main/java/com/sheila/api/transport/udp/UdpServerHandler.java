@@ -40,7 +40,8 @@ public class UdpServerHandler extends SimpleChannelInboundHandler<DatagramPacket
     protected void channelRead0(ChannelHandlerContext ctx, DatagramPacket packet) {
         String msg = packet.content().toString(CharsetUtil.UTF_8).trim();
         InetSocketAddress sender = packet.sender();
-        String senderIp = sender.getAddress().getHostAddress();
+        String rawIp = packet.sender().getAddress().getHostAddress();
+        String senderIp = NetUtil.normalizeIp(rawIp);
         int senderPort = sender.getPort();
 
         if (msg.isEmpty()) {
@@ -55,7 +56,7 @@ public class UdpServerHandler extends SimpleChannelInboundHandler<DatagramPacket
             switch (cmd) {
                 case "JOIN" -> handleJoin(ctx, sender, parts, senderIp, senderPort);
                 case "LEAVE" -> handleLeave(ctx, sender, parts, senderIp, senderPort);
-                case "LIST" -> handleList(ctx, sender, parts);
+                case "LIST" -> handleList(ctx, sender, parts , senderIp , senderPort);
                 case "PING" -> handlePing(ctx, sender, parts, senderIp, senderPort);
                 case "PONG" -> handlePong(ctx, sender, parts, senderIp, senderPort);
                 default -> send(ctx, sender, "ERR|UNKNOWN_COMMAND|" + cmd);
@@ -111,10 +112,11 @@ public class UdpServerHandler extends SimpleChannelInboundHandler<DatagramPacket
         send(ctx, sender, "OK|LEFT");
     }
 
-    private void handleList(ChannelHandlerContext ctx, InetSocketAddress sender, String[] p) {
+    private void handleList(ChannelHandlerContext ctx, InetSocketAddress sender, String[] p , String ip, int port) {
         if (p.length < 3) throw new IllegalArgumentException("LIST|<appKey>|<roomName>");
         String appKey = p[1].trim();
         String roomName = p[2].trim();
+        roomService.touchClient(appKey, roomName, ip , port);
         List<String> peers = roomService.listRoomPeers(appKey, roomName).stream()
                 .map(Endpoint::toString)
                 .collect(Collectors.toList());

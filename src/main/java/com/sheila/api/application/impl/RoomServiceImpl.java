@@ -132,6 +132,22 @@ public class RoomServiceImpl implements RoomService {
         return new RoomJoinResult(roomName, endpoints, new Endpoint(ip, port));
     }
 
+    @Override
+    @Transactional
+    public void touchClient(String appKey, String roomName, String ip, int port) {
+        String appId = resolveApplicationId(appKey)
+                .orElseThrow(() -> new AppNotFoundException(appKey));
+        var roomOpt = roomRepository.findByApplicationIdAndName(appId, roomName);
+        if (roomOpt.isEmpty()) return;
+        var room = roomOpt.get();
+
+        clientRepository.findByRoomIdAndIpAndPort(room.getId(), ip, port).ifPresent(c -> {
+            Query q = new Query(Criteria.where("id").is(c.getId()));
+            Update u = new Update().set("lastSeen", new Date());
+            mongo.updateFirst(q, u, ClientDoc.class);
+        });
+    }
+
     private int normalizeCapacity(Integer cap) {
         if (cap == null || cap < 1) return defaultRoomCapacity;
         return cap;
