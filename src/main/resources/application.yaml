@@ -5,6 +5,14 @@ app:
     enabled: true
   rooms:
     defaultCapacity: 100   # ← oda kapasitesi verilmezse kullanılacak varsayılan
+  presence:
+    enabled: false
+    checkIntervalMs: 10000
+    timeoutMs: 30000
+  probe:   # Sunucu başlatımlı probe
+    enabled: true
+    intervalMs: 10000   # 10 sn'de bir SRV_PING
+    maxMissed: 3        # Üst üste 3 PING'e PONG gelmezse düşür
 
 spring:
   data:
