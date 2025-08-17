@@ -128,6 +128,7 @@ Metin tabanlı, UTF-8, alanlar `|` ile ayrılır.
 - **JOIN:** `JOIN|<appName>|<roomName>|[capacity]`  
   `capacity` sadece oda ilk oluşturulurken dikkate alınır; mevcut odada yok sayılır.
 - **LIST:** `LIST|<appName>|<roomName>`
+- **LISTAPP:** `LIST|<appName>,`
 - **LEAVE:** `LEAVE|<appName>|<roomName>`
 - **PONG:** `PONG|<appName>|<roomName>` — sunucunun `SRV_PING`’ine yanıt  
   > İstemcinin IP/port’u payload’dan okunmaz; paketin kaynağından alınır.
