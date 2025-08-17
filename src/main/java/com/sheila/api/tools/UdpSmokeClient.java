@@ -52,7 +52,7 @@ public class UdpSmokeClient {
 
             // Konsol komutları
             try (BufferedReader br = new BufferedReader(new InputStreamReader(System.in))) {
-                System.out.println("[client] commands: LIST | LEAVE | JOIN [cap] | QUIT");
+                System.out.println("[client] commands: LIST | LISTAPP | LEAVE | JOIN [cap] | QUIT");
                 String line;
                 while (running.get() && (line = br.readLine()) != null) {
                     String[] parts = line.trim().split("\\s+");
@@ -61,6 +61,7 @@ public class UdpSmokeClient {
 
                     switch (cmd) {
                         case "LIST" -> send(sock, server, "LIST|" + appName + "|" + roomName);
+                        case "LISTAPP" -> send(sock, server, "LIST|" + appName);
                         case "LEAVE" -> send(sock, server, "LEAVE|" + appName + "|" + roomName);
                         case "JOIN" -> {
                             Integer cap = (parts.length >= 2) ? tryParseInt(parts[1]) : null;

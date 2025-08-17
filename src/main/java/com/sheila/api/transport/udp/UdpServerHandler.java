@@ -113,10 +113,19 @@ public class UdpServerHandler extends SimpleChannelInboundHandler<DatagramPacket
     }
 
     private void handleList(ChannelHandlerContext ctx, InetSocketAddress sender, String[] p , String ip, int port) {
-        if (p.length < 3) throw new IllegalArgumentException("LIST|<appKey>|<roomName>");
+        if (p.length < 2) throw new IllegalArgumentException("LIST|<appKey>|<roomName>");
         String appKey = p[1].trim();
+
+        if (p.length == 2 || p[2].isBlank()) {
+            var roomNames = roomService.listRoomNames(appKey);
+            send(ctx, sender, "ROOMS|" + appKey + "|rooms=" + joinClientsList(roomNames));
+            return;
+        }
+
         String roomName = p[2].trim();
+
         roomService.touchClient(appKey, roomName, ip , port);
+
         List<String> peers = roomService.listRoomPeers(appKey, roomName).stream()
                 .map(Endpoint::toString)
                 .collect(Collectors.toList());

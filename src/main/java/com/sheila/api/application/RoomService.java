@@ -24,6 +24,8 @@ public interface RoomService {
 
     void leaveRoom(String appKey, String roomName, String ip, int port);
 
+    List<String> listRoomNames(String appKey);
+
     void touchClient(String appKey, String roomName, String ip, int port);
 }
 

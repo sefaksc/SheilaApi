@@ -133,6 +133,17 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
+    public List<String> listRoomNames(String appKey) {
+        String appId = resolveApplicationId(appKey)
+                .orElseThrow(() -> new AppNotFoundException(appKey));
+
+        return roomRepository.findByApplicationId(appId).stream()
+                .map(RoomDoc::getName)
+                .sorted()
+                .collect(java.util.stream.Collectors.toList());
+    }
+
+    @Override
     @Transactional
     public void touchClient(String appKey, String roomName, String ip, int port) {
         String appId = resolveApplicationId(appKey)
