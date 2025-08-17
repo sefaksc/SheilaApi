@@ -1,0 +1,25 @@
+# Metin dosyaları için LF (depoda)
+* text=auto eol=lf
+
+# Windows betikleri CRLF kalsın
+*.bat text eol=crlf
+*.cmd text eol=crlf
+
+# Unix betikleri LF şart
+*.sh  text eol=lf
+
+# Yaygın metin türleri (isteğe bağlı, netleştirir)
+*.java      text eol=lf
+*.xml       text eol=lf
+*.properties text eol=lf
+*.md        text eol=lf
+*.yml       text eol=lf
+*.yaml      text eol=lf
+
+# Binary dosyalar (satır sonu dönüştürme yok)
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.pdf binary
+*.jar binary
